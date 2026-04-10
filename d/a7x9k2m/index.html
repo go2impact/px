@@ -651,93 +651,141 @@
   <!-- ═══════════════════════════════════════ -->
   <div class="tab-content active" id="tab-discovery">
 
-    <!-- WHAT WE HEARD -->
-    <section class="section">
-      <div class="section-heading">What We Heard</div>
+    <p style="margin-bottom:32px;">Here's what we took away from our conversation and what we'll cover on Friday.</p>
 
-      <p>You've built a private investor community of ~800 members on WhatsApp with about 70 channels. The platform is working -- people are active, conversations are happening. The problem isn't the community. It's that WhatsApp was never designed to be moderated at this scale, and Meta keeps it that way on purpose.</p>
+    <!-- DROPDOWN 1: WHAT WE HEARD -->
+    <details open>
+      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+        <span>1. What We Heard</span>
+        <span style="font-size:12px;color:var(--ink-faint);font-family:var(--sans);font-weight:500;"><!-- CLIENT-SPECIFIC --></span>
+      </summary>
+      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
 
-      <p>You have three rules:</p>
+        <p>You've built a private investor community of ~800 members on WhatsApp with about 70 channels. WhatsApp was never designed to be moderated at this scale, and Meta keeps it that way on purpose.</p>
 
-      <div class="rules">
-        <div class="rule">
-          <span class="rule-n">1</span>
-          <div class="rule-body">
-            <strong>Full name in profile</strong>
-            <span>No anonymous accounts. If your name isn't real, you can't be here.</span>
+        <p>Three rules:</p>
+        <div class="rules">
+          <div class="rule">
+            <span class="rule-n">1</span>
+            <div class="rule-body">
+              <strong>Full name in profile</strong>
+              <span>No anonymous accounts.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n">2</span>
+            <div class="rule-body">
+              <strong>No solicitation</strong>
+              <span>WhatsApp is for conversation. No deals, no pitches, no promotions. That happens on the platform.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n">3</span>
+            <div class="rule-body">
+              <strong>Be respectful</strong>
+              <span>No personal attacks, no political arguments that go off the rails, no trolling.</span>
+            </div>
           </div>
         </div>
-        <div class="rule">
-          <span class="rule-n">2</span>
-          <div class="rule-body">
-            <strong>No solicitation</strong>
-            <span>WhatsApp is for conversation. No deals, no pitches, no promotions. That happens on the platform.</span>
-          </div>
-        </div>
-        <div class="rule">
-          <span class="rule-n">3</span>
-          <div class="rule-body">
-            <strong>Be respectful</strong>
-            <span>No personal attacks, no political arguments that go off the rails, no trolling.</span>
-          </div>
+
+        <p>One offshore moderator covers roughly 9-5 weekdays — moderation is one piece of her job. You're personally reading all 70 channels once a day. Violations happen at night and on weekends. It's always reactive.</p>
+
+        <p>You've tried the WhatsApp API route. Reading messages out works. Posting back in breaks — Meta actively fights it. You're on regular WhatsApp, not Business API, which is correct since the Business API doesn't support Communities, caps groups at 8 people, and restricts outbound DMs.</p>
+
+        <p>You want to scale the community further. More members, more activity. The moderation problem gets worse unless the underlying process changes.</p>
+      </div>
+    </details>
+
+    <!-- DROPDOWN 2: PEOPLE -->
+    <details>
+      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+        <span>2. People</span>
+      </summary>
+      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
+
+        <h3 style="margin-top:0;">What Go2 Does</h3>
+        <p>Go2 has been doing this for years. We find the right person for your team, they join as a real member — you manage them, they're your people. Month-to-month subscription, no long-term commitment. We support the hiring, onboarding, and co-management.</p>
+
+        <p>Every teammate gets a dedicated engagement manager from Go2 — someone who coaches them, tracks performance, and keeps things on track. It's not outsourcing. It's not a temp agency. It's a partnership where we're invested in making the person successful on your team.</p>
+
+        <h3>What's Included</h3>
+        <ul style="padding-left:20px;margin:12px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Candidate evaluation and matchmaking</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Dedicated engagement manager</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Portal with team reporting and analytics</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Onboarding, goal setting, and measurement</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Technical and operations support</li>
+        </ul>
+
+        <h3>Timeline</h3>
+        <p>Up and running in under two weeks. We handpick candidates, you review and interview, and we kick off with clear expectations and goals. From there it's a continuous loop — check-ins, shared visibility, coaching, feedback.</p>
+
+        <!-- CLIENT-SPECIFIC -->
+        <h3>For 3i</h3>
+        <p>Your gap is nights and weekends — the shifts where violations happen and nobody's watching. That's the starting shape. We'll scope the exact coverage model on Friday — whether that's one person on split shifts, two people, or something in between depends on your actual volume and tolerance for downtime.</p>
+      </div>
+    </details>
+
+    <!-- DROPDOWN 3: TECHNOLOGY & TOOLS -->
+    <details>
+      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+        <span>3. Technology & Tools</span>
+      </summary>
+      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
+
+        <h3 style="margin-top:0;">The Platform</h3>
+        <p>Every Go2 teammate works with our technology layer underneath them. It captures how work actually happens — not what people report, what they do. That data flows into reports you see, benchmarks we track, and tools that make the person more effective over time.</p>
+
+        <ul style="padding-left:20px;margin:12px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Automated workflow mapping that identifies bottlenecks</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Speed and quality benchmarks per task</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">End-of-day reports with context and feedback</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Performance coaching driven by real data, not guesswork</li>
+        </ul>
+
+        <p>Across our accounts, we see &gt;25% productivity improvement from day 30 to day 90. By the end of the first year, 3x performance and commitment gains are typical.</p>
+
+        <h3>The Pilot</h3>
+        <p>On top of the standard platform, we're currently piloting an additional layer at no extra cost. It uses the activity data to surface automation opportunities and generate reports showing where time is going and where it could be recovered.</p>
+
+        <p>You get those reports regardless — what's happening, where the opportunities are. The tools to act on them are being built to be plug-and-play. We work with your teammate on small improvements naturally, but we're not automating your business for you. You decide what to do with the data.</p>
+
+        <!-- CLIENT-SPECIFIC -->
+        <h3>For 3i</h3>
+        <p>We also put together a WhatsApp monitoring starter kit — a read-only system that pulls messages from your channels into a database and routes flagged violations to whoever is on coverage. Details are in the next tab.</p>
+
+        <div class="aside">
+          <p><strong>Worth noting:</strong> Once every message from every channel is in a database, moderation is just the first use case. You're sitting on a full record of what 800 investors are talking about — topics, trends, sentiment, conversation summaries. The hard part is getting the data out. Once it's out, you can do whatever you want with it.</p>
         </div>
       </div>
+    </details>
 
-      <p>You have one offshore moderator covering roughly 9-5 weekdays, but moderation is one piece of her job, not the whole thing. You're personally reading all 70 channels once a day to pulse check. Violations happen at 10pm on a Thursday and you find them 12 hours later. It's always reactive.</p>
+    <!-- DROPDOWN 4: NEXT STEPS -->
+    <details>
+      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+        <span>4. Next Steps</span>
+      </summary>
+      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
 
-      <p>You've already tried to solve the WhatsApp API side. Reading messages out is doable. Posting back in is where it breaks -- Meta actively fights unofficial clients. We've been through the same cycle.</p>
+        <!-- CLIENT-SPECIFIC -->
+        <h3 style="margin-top:0;">Friday</h3>
+        <p>We'll walk through all of this live — confirm what we heard, fill in what we missed, scope the coverage model, and talk through the technology. If you've had a chance to look at the WhatsApp monitoring kit in the next tab, we can go through that together too.</p>
 
-      <div class="aside">
-        <p><strong>Working assumption:</strong> You're on regular WhatsApp, not WhatsApp Business API. That's correct -- the Business API doesn't support Communities, caps groups at 8 people, and restricts outbound DMs to a 24-hour reply window with pre-approved templates.</p>
+        <h3>After Friday</h3>
+        <p>If it makes sense to move forward:</p>
+        <ul style="padding-left:20px;margin:12px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">We start matching candidates immediately — handpicked, reviewed by you</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Final interviews and selection within 5-8 days</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Kickoff in week 2 — expectations, goals, systems access</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">30-90 days: continuous check-ins, shared visibility, coaching</li>
+        </ul>
       </div>
+    </details>
 
-      <p>You want to scale this community further. More members, more channels, more activity. That means the moderation problem gets worse, not better, unless the underlying process changes.</p>
-    </section>
-
-    <div class="section-break"></div>
-
-    <!-- WHAT WE CAN DO -->
-    <section class="section">
-      <div class="section-heading">What We Can Do</div>
-
-      <h3>Coverage</h3>
-      <p>You need people covering the hours you can't -- nights, weekends, and the gaps your current moderator doesn't have bandwidth for. That's what we do. We hire the right people, they become part of your team, you manage them. We charge a monthly subscription.</p>
-      <p>For your setup, that probably looks like after-hours and weekend coverage to start -- the shifts where violations happen and nobody's watching. We'll scope the right shape on Friday.</p>
-
-      <h3>Technology</h3>
-      <p>On top of the people, we layer in monitoring and automation that makes them more effective over time. The WhatsApp monitoring kit (see the next tab) feeds alerts directly to your team so they're not manually reading 70 channels. As the automation improves, your people can take on more high-value work and spend less time on raw moderation.</p>
-      <p>Over time, the people work to make themselves removable. That's the model.</p>
-
-      <div class="aside">
-        <p><strong>Worth noting:</strong> Once you're pulling every message from every channel into a database, moderation is just the first use case. You're sitting on a full record of what 800 investors are talking about -- topics by channel, trending concerns, conversation summaries, community dashboards. The hard part is getting the data out. Once it's out, you can do whatever you want with it.</p>
-      </div>
-    </section>
-
-    <div class="section-break"></div>
-
-    <!-- FRIDAY AGENDA -->
-    <section class="section">
-      <div class="section-heading">Friday Agenda</div>
-
-      <div class="agenda">
-        <div class="agenda-item">
-          <span class="agenda-n">1</span>
-          <span class="agenda-label">Recap our previous conversation</span>
-        </div>
-        <div class="agenda-item">
-          <span class="agenda-n">2</span>
-          <span class="agenda-label">People</span>
-        </div>
-        <div class="agenda-item">
-          <span class="agenda-n">3</span>
-          <span class="agenda-label">Technology & Tools</span>
-        </div>
-        <div class="agenda-item">
-          <span class="agenda-n">4</span>
-          <span class="agenda-label">Next steps</span>
-        </div>
-      </div>
-    </section>
+    <!-- WHERE THIS IS GOING -->
+    <div style="margin-top:48px;padding:20px;border-top:1px solid var(--rule-line);">
+      <p style="font-size:13px;color:var(--ink-muted);line-height:1.7;margin-bottom:8px;">You get reports and data from us regardless — what's happening, where the opportunities are. The tools to act on those opportunities are being built to be plug-and-play. Over time, you get your own control panel to review and approve changes directly. Your team runs it, we coach and staff for as long as you want. The system is designed to suggest improvements without needing access to your business data. <a href="https://moran.bot/things/relay" target="_blank" style="color:var(--teal);font-size:13px;">Here's an early look at the relay surface we're building toward.</a></p>
+    </div>
 
   </div>
 
@@ -747,7 +795,8 @@
   <div class="tab-content" id="tab-kit">
 
     <section class="section">
-      <p style="font-size:16px; color:var(--ink); margin-bottom:24px;">Included here is a stripped-down version of the Mac workflow I use to monitor WhatsApp groups locally. It combines a dedicated Observer account, two intake paths, and a local review database so flagged messages can be drafted and routed to the right person. It is strongest on group monitoring, still needs setup on your machine, and is best treated as a practical starter your local harness can install, test, and tune.</p>
+      <p style="font-size:16px; color:var(--ink); margin-bottom:16px;">Included here is a stripped-down version of the Mac workflow I use to monitor WhatsApp groups locally. It combines a dedicated Observer account, two intake paths, and a local review database so flagged messages can be drafted and routed to the right person. It is strongest on group monitoring, still needs setup on your machine, and is best treated as a practical starter your local harness can install, test, and tune.</p>
+      <p style="margin-bottom:24px;"><a href="/px/dl/starter-kit.zip" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--teal);color:white;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:none;">&#11015; Download Starter Kit</a></p>
     </section>
 
     <!-- SUBTABS -->
