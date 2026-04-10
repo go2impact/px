@@ -747,7 +747,7 @@
   <div class="tab-content" id="tab-kit">
 
     <section class="section">
-      <p style="font-size:16px; color:var(--ink); margin-bottom:24px;">My computer already put together an installable package of what I've been using that pulls WhatsApp messages into a database, sets up a webhook to fire alerts, and wraps knowledge around it to write a custom message and send it out to whatever phone number you want. It works reliably for me but it's still a hack so it's brittle -- not promising anything, but my guess is it would work for that part.</p>
+      <p style="font-size:16px; color:var(--ink); margin-bottom:24px;">Included here is a stripped-down version of the Mac workflow I use to monitor WhatsApp groups locally. It combines a dedicated Observer account, two intake paths, and a local review database so flagged messages can be drafted and routed to the right person. It is strongest on group monitoring, still needs setup on your machine, and is best treated as a practical starter your local harness can install, test, and tune.</p>
     </section>
 
     <!-- SUBTABS -->
@@ -765,7 +765,7 @@
       <section class="section">
         <div class="section-heading">How It Works</div>
 
-        <p>The system is redundant by design. Two independent collectors watch the same channels. As long as one of them sees the message, it makes it into the database.</p>
+        <p>The system is redundant by design. A dedicated Observer account sits in the channels, and two separate collectors watch the same traffic. That gives the setup a stronger chance of seeing what matters, with group monitoring as the clearest supported path.</p>
 
         <h3>1. Intake (redundant)</h3>
         <p>A dedicated Observer WhatsApp account sits in all 70 channels. On the Mac running the monitoring stack, two collectors watch it simultaneously:</p>
@@ -774,25 +774,28 @@
             <span class="rule-n">A</span>
             <div class="rule-body">
               <strong>Native notifications</strong>
-              <span>macOS desktop notifications from WhatsApp. Fast wake-up signal. Can truncate long messages.</span>
+              <span>macOS desktop notifications from WhatsApp. Fast wake-up signal. Useful for catching activity quickly, but can truncate or suppress messages depending on what is open on the screen.</span>
             </div>
           </div>
           <div class="rule">
             <span class="rule-n">B</span>
             <div class="rule-body">
               <strong>Baileys (linked device)</strong>
-              <span>Direct WhatsApp protocol connection. Richer data — full message text, sender identity, group metadata. Stronger evidence.</span>
+              <span>Linked-device collector. Richer group data — fuller message text, sender identity, and group metadata when that path is healthy. This is the stronger evidence path for groups.</span>
             </div>
           </div>
         </div>
-        <p>Both feed into the same local SQLite database. The merge layer reconciles them — if one catches something the other missed, it backfills. If both catch it, it confirms.</p>
+        <p>Both feed into the same local SQLite database. The merge layer reconciles them — if one intake path catches something the other missed, it can backfill; if both see it, confidence goes up.</p>
+        <p>For one-to-one direct messages, native notifications are best-effort only, and Baileys-based DM monitoring is not part of the supported setup.</p>
 
         <h3>2. Classify</h3>
-        <p>Every message gets checked against your three rules. The AI reads the message, evaluates it, and if there's a violation, drafts a custom moderation response appropriate to the tone and context of the conversation.</p>
+        <p>Every message can be checked against your rules. The AI reads the message, evaluates it, and if there's a violation, drafts a custom moderation response appropriate to the tone and context of the conversation.</p>
+        <p>The rules, escalation logic, and response guidance live in editable markdown, so your harness can tune them without rebuilding the collectors.</p>
 
         <h3>3. Route & Alert</h3>
         <p>This version is set up on a Mac, so it uses iMessage to send the alert. When a violation is flagged, the system looks at who's supposed to be on coverage at that time — based on schedule, time of day, whatever routing rules you set — and sends them a text with the flagged message plus the suggested response.</p>
         <p>If the person doesn't acknowledge it within a set window, it can re-send or escalate to a second person. The routing logic is configurable.</p>
+        <p>If you later want a harder after-hours backup, the same database and routing layer can be extended with a second observer setup or a cloud relay. That is a future hardening path, not the assumption for this starter.</p>
 
         <div class="aside">
           <p><strong>It never posts back into WhatsApp automatically.</strong> That's what breaks. The system watches, classifies, drafts, and alerts. A human reviews and posts the response themselves. The only time anyone should touch the Observer account directly is once a week or so — just open WhatsApp on the phone briefly to keep the session alive. It won't log out often, but it's good hygiene.</p>
@@ -803,7 +806,7 @@
           <div class="pipeline-step">
             <div class="pipeline-icon">&#128229;</div>
             <div class="pipeline-label">Intake</div>
-            <div class="pipeline-desc">Notifications + Baileys capture every message into a local database</div>
+            <div class="pipeline-desc">Notifications + the linked-device collector bring observed group activity into a local database</div>
           </div>
           <div class="pipeline-step">
             <div class="pipeline-icon">&#129504;</div>
@@ -824,7 +827,7 @@
         </div>
 
         <div class="aside">
-          <p><strong>Mac-first, PC-portable:</strong> I happen to have this running on a Mac, which is why it uses iMessage for alerts and macOS notifications as one of the intake paths. It would work on a PC but needs some retooling on the notification and alert sides. We can talk through what makes sense for your setup on Friday.</p>
+          <p><strong>Mac-first:</strong> This starter is designed around WhatsApp Desktop on a Mac, macOS notifications, and a Mac-side alert path. A PC version is possible, but it would need a different notification and alert adapter.</p>
         </div>
       </section>
 
@@ -834,7 +837,7 @@
     <div class="subtab-content" id="subtab-install">
 
       <section class="section">
-        <p>Everything below will get the monitoring system running on your machine. This is completely optional -- we can walk through it together on Friday instead.</p>
+        <p>Everything below is enough to get the monitoring kit running locally on a Mac. If you would rather not do it yourself, you can hand the zip to a local harness like ClogCode or Codex Desktop and let it drive the steps with you.</p>
 
         <!-- STEP 0: OBSERVER ACCOUNT -->
         <div class="setup-step">
@@ -844,7 +847,7 @@
           </div>
           <p>You need a dedicated WhatsApp account that just watches. This is separate from anyone's personal account.</p>
           <ol style="padding-left:20px;margin:12px 0;">
-            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Get a spare phone number (a cheap SIM or a Google Voice number works).</li>
+            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Get a spare mobile number on a real phone. A cheap SIM-backed line is fine. Avoid Google Voice if you may want same-number Mac/iPhone relay later.</li>
             <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Create a new WhatsApp account on a real phone with that number.</li>
             <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Add the Observer account to all 70 channels as a member.</li>
             <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">On the Mac that will run the monitoring, open WhatsApp Desktop and link it to the Observer phone (Settings > Linked Devices).</li>
@@ -862,23 +865,23 @@
             <span class="setup-step-n">1</span>
             <span class="setup-step-title">Get a harness on your computer</span>
           </div>
-          <p>If you already have Codex or Claude Code as a desktop app, skip to Step 3.</p>
+          <p>If you already have a local harness like ClogCode, Codex Desktop, or Claude Desktop, skip to Step 3.</p>
           <div class="setup-options">
             <div class="setup-option">
               <span class="opt-letter">A.</span>
-              <span><strong>ChatGPT subscription?</strong> Download Codex &rarr; <a href="https://openai.com/codex" target="_blank">openai.com/codex</a></span>
+              <span><strong>Codex Desktop</strong> &rarr; <a href="https://openai.com/codex" target="_blank">openai.com/codex</a></span>
             </div>
             <div class="setup-option">
               <span class="opt-letter">B.</span>
-              <span><strong>Claude / Anthropic?</strong> Download Claude Desktop &rarr; <a href="https://claude.ai/download" target="_blank">claude.ai/download</a></span>
+              <span><strong>Claude Desktop</strong> &rarr; <a href="https://claude.ai/download" target="_blank">claude.ai/download</a></span>
             </div>
             <div class="setup-option">
               <span class="opt-letter">C.</span>
-              <span><strong>Neither?</strong> Claude Desktop is fastest -- <a href="https://claude.ai" target="_blank">claude.ai</a>, create account, up in under 3 minutes</span>
+              <span><strong>Another local AI coding tool</strong> is fine too — the important thing is that it can read the folder and run local commands.</span>
             </div>
           </div>
           <div class="aside">
-            <p><strong>One catch:</strong> Whatever computer this runs on has to actually be on. It can run in the cloud too -- we can sort that out on Friday if needed.</p>
+            <p><strong>One catch:</strong> The Mac that runs the local observer stack has to stay on during monitoring windows. A larger cloud backup is possible later, but this starter is built to work locally first.</p>
           </div>
         </div>
 
@@ -886,9 +889,9 @@
         <div class="setup-step">
           <div class="setup-step-header">
             <span class="setup-step-n">2</span>
-            <span class="setup-step-title">Two things your computer needs (2 min, one time ever)</span>
+            <span class="setup-step-title">One-time Mac setup</span>
           </div>
-          <p>Codex and Claude Code need these to run. Open Terminal (on Mac, search "Terminal" in Spotlight) and paste these one at a time:</p>
+          <p>If your harness says this Mac is missing package tools, open Terminal (search “Terminal” in Spotlight) and paste these one at a time. This is one-time setup.</p>
 
           <div class="cmd-label">First, install Homebrew (a package manager):</div>
           <div class="paste-block">
@@ -900,43 +903,56 @@
 <button class="copy-btn" onclick="copyBlock(this)"><span class="copy-icon">Copy</span><span class="check-icon">Copied</span></button>
 brew install git node</div>
 
-          <p>If either says "already installed" -- great. Close Terminal. You never have to do this again.</p>
-          <p class="muted-note">If anything goes wrong, paste the error into ChatGPT or Claude and it'll tell you exactly what to do. It's usually nothing.</p>
+          <p>If either says “already installed,” that is fine. Close Terminal when it finishes. You should only have to do this once on that Mac.</p>
+          <p class="muted-note">If the harness asks for Accessibility or other Mac permissions during setup, allow them so the local collectors can work.</p>
         </div>
 
         <!-- STEP 3 -->
         <div class="setup-step">
           <div class="setup-step-header">
             <span class="setup-step-n">3</span>
-            <span class="setup-step-title">Paste this into your harness</span>
+            <span class="setup-step-title">Give the zip to your harness</span>
           </div>
-          <p>Open Codex or Claude Code and paste the entire block below. You don't need to understand everything in here -- your computer does. Just paste it and follow along.</p>
+          <p>Open your harness, point it at the shipped folder or zip, and paste the block below. The goal is not to rebuild this from scratch. The goal is to install it locally, link it, and run one clean QA pass.</p>
 
           <div class="paste-block large">
 <button class="copy-btn" onclick="copyBlock(this)"><span class="copy-icon">Copy</span><span class="check-icon">Copied</span></button>
-I'm Gretchen. I run platform operations for 3i Members, a private investor network with about 800 members. We have a WhatsApp Community with roughly 70 channels.
+I run platform operations for a private investor network with a large WhatsApp Community.
 
-I need to build a monitoring system that does the following:
+I am giving you a shipped Mac-first monitoring kit as a folder or zip. It is a stripped-down local starter, not a hosted product. It does not include live auth, real data, or production logs.
 
-1. Pull all messages from my WhatsApp Community channels into a local database so I have a searchable record of everything
-2. Set up a webhook that fires every time a new message comes in
-3. Classify each message against three moderation rules:
-   - Rule 1: Members must have their full real name in their WhatsApp profile (not initials, not a nickname, not blank)
-   - Rule 2: No solicitation of any kind — no deals, no pitches, no promotions. WhatsApp is for conversation only. Deal sharing happens on the platform, not in the chat.
-   - Rule 3: Be respectful — no personal attacks, no heated political arguments that devolve into insults, no trolling
-4. When a violation is detected, write a custom moderation message appropriate to the specific violation and the tone of the conversation
-5. Send that alert plus the suggested moderation message to my phone number via text/SMS so I can review it and post it myself
+Your job is to:
 
-Important constraints:
-- This is regular WhatsApp, NOT WhatsApp Business API
-- READ ONLY — do not attempt to post messages back into WhatsApp. That is intentionally out of scope. I will post responses manually.
-- Everything runs locally on my computer
-- The WhatsApp connection should use the repo at: [REPO_URL_PLACEHOLDER]
+1. Read the files in the folder first, especially:
+   - START_HERE.md
+   - HARNESS_INSTRUCTIONS.md
+   - OBSERVER_ACCOUNT_RULES.md
+   - POLICY_RULEBOOK_TEMPLATE.md
+   - TROUBLESHOOTING_AND_RECOVERY.md
+2. Install anything missing on this Mac
+3. Help set up the Observer account and link WhatsApp Desktop if needed
+4. Start the local stack
+5. Run one real QA test with a fresh group message
+6. Show me where the local packet output lives
+7. Tell me what still needs wrapping
 
-Start by cloning the repo, then walk me through each step. Ask me questions if you need my WhatsApp credentials or phone number for the SMS alerts. Take it one step at a time.</div>
+Important truths:
+- This is Mac-first and local-first
+- Group monitoring is the strongest supported path
+- Native DMs are best-effort only
+- Baileys DMs are not supported
+- Do not assume the zip contains live credentials or production data
+- Keep the setup local instead of redesigning it into a cloud service as the first move
+
+Use the editable markdown files to tune:
+- moderation rules
+- escalation logic
+- suggested responses
+
+Take it one step at a time. Ask me only for values you actually need on this machine.</div>
 
           <div class="aside">
-            <p><strong>Note:</strong> The repo link above will be updated before Friday -- we're doing a final check on it tonight. If you're reading this before then, sit tight on this step and we'll walk through it together on the call.</p>
+            <p><strong>What success looks like:</strong> the harness gets the stack installed, linked, and able to catch one fresh group message into the local packet output. After that, it can tighten the rulebook and escalation logic in markdown without needing to rebuild the collectors.</p>
           </div>
         </div>
 
@@ -949,6 +965,7 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
       <section class="section">
         <div class="section-heading">Troubleshooting Checklist</div>
 
+        <p>Day to day, a healthy setup looks like this: the Observer phone is on and connected, WhatsApp Desktop is linked on the Mac, the Mac is awake during monitoring windows, and the Observer account is not being used like a normal human account.</p>
         <p>The phone is the main account. The Mac only helps surface activity. If the phone is offline or logged out, monitoring can stop.</p>
 
         <h3>Common causes when alerts stop</h3>
@@ -972,6 +989,13 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
           <p><strong>Crucial Mac rule:</strong> Never leave the observer chat open and active in WhatsApp Desktop. Close it or move away from it so it is not the active conversation. If that chat is open in the foreground, the Mac may not trigger the notifications the system needs.</p>
         </div>
 
+        <h3>Good hygiene</h3>
+        <ul style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Open WhatsApp on the Observer phone briefly every week or two and let it sync.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">After any relink, run one fresh test message to confirm the pipeline is still alive.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Keep the Observer account boring and passive. It should watch, not participate.</li>
+        </ul>
+
         <h3>Escalate if</h3>
         <ul style="padding-left:20px;margin:16px 0;">
           <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">The phone keeps getting forced to relink</li>
@@ -988,6 +1012,7 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
         <div class="section-heading">How the Rulebook Should Think</div>
 
         <p>The collectors are not the moderation brain. This is the policy layer that tells the system what counts, what is ambiguous, and what should happen next.</p>
+        <p>The rules and escalation logic live in editable markdown, which means your harness can tighten language, thresholds, and response suggestions without needing to rebuild the intake side.</p>
 
         <h3>Default moderation logic</h3>
         <ol style="padding-left:20px;margin:16px 0;">
@@ -1035,7 +1060,7 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
         </ul>
 
         <div class="aside">
-          <p><strong>Why keep it generic first:</strong> The temptation is to overfit to exactly three rules. Resist that. The starter layer should make room for more categories, clearer thresholds, and operator feedback without a rebuild.</p>
+          <p><strong>Why keep it generic first:</strong> The temptation is to overfit to exactly three rules. Resist that. The starter layer should make room for more categories, clearer thresholds, and operator feedback without a rebuild. The AI recommends; a human still decides what to send and when.</p>
         </div>
       </section>
     </div>
@@ -1045,7 +1070,8 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
       <section class="section">
         <div class="section-heading">How the Database is Meant to Grow</div>
 
-        <p>The starter kit keeps the database practical. Raw evidence stays factual, packet rows hold the operational interpretation, and the schema is shaped so a dashboard can sit on top without rewriting the stack.</p>
+        <p>The starter kit keeps the database practical. Raw evidence stays factual, packet rows hold the operational interpretation, and the schema is shaped so a dashboard can sit on top later without rewriting the stack.</p>
+        <p>You do not need to care about every field on day one. The point is to keep a searchable record, a clear review queue, and a clean place to add repeat-offender logic or member joins later.</p>
 
         <h3>Three layers, three jobs</h3>
         <div class="rules">
@@ -1083,7 +1109,7 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
 
         <h3>Repeat offenders and member joins</h3>
         <div class="aside">
-          <p>Repeat-offender views group by <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">sender_key</code> when it exists. CRM joins eventually map the WhatsApp identity to your member record. The schema is already pointed toward this -- start with packet-level rollups, enrich later.</p>
+          <p>Repeat-offender views group by <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">sender_key</code> when it exists. CRM joins eventually map the WhatsApp identity to your member record. The schema is already pointed toward this — start with packet-level rollups, enrich later.</p>
         </div>
       </section>
     </div>
