@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go2 — Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --cream: #FAF9F6;
+    --paper: #F4F2ED;
+    --ink: #1C1917;
+    --ink-secondary: #44403C;
+    --ink-muted: #78716C;
+    --ink-faint: #A8A29E;
+    --teal: #0F766E;
+    --teal-soft: #CCFBF1;
+    --rule-line: rgba(28,25,23,0.06);
+    --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 80px 28px 100px;
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 48px 20px 64px; }
+  }
+
+  /* ─── Header ─── */
+  .letterhead {
+    padding-bottom: 48px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--rule-line);
+  }
+
+  .letterhead .from-line {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 32px;
+  }
+
+  .letterhead h1 {
+    font-family: var(--serif);
+    font-size: clamp(38px, 7vw, 56px);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .letterhead .date-line {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  .letterhead .context {
+    margin-top: 28px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .letterhead .context-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .letterhead .context-item .val {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .letterhead .context-item .label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ─── Tabs ─── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 48px;
+    background: var(--paper);
+    padding: 4px;
+    border-radius: 10px;
+    position: sticky;
+    top: 16px;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 20px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .tab-btn:hover {
+    color: var(--ink-secondary);
+  }
+
+  .tab-btn.active {
+    background: white;
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── Subtabs (inside tab 2) ─── */
+  .subtabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--rule-line);
+  }
+
+  .subtab-btn {
+    padding: 10px 20px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+
+  .subtab-btn:hover {
+    color: var(--ink-secondary);
+  }
+
+  .subtab-btn.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+
+  .subtab-content {
+    display: none;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .subtab-content.active {
+    display: block;
+  }
+
+  /* ─── Sections ─── */
+  .section {
+    margin-bottom: 64px;
+  }
+
+  .section-heading {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 32px);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+    margin-top: 40px;
+  }
+
+  p {
+    font-size: 15px;
+    color: var(--ink-secondary);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .section-break {
+    width: 40px;
+    height: 1px;
+    background: var(--rule-line);
+    margin: 64px 0;
+  }
+
+  /* ─── Rules ─── */
+  .rules {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--rule-line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .rule {
+    background: white;
+    padding: 18px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .rule-n {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--teal);
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+
+  .rule-body strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .rule-body span {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* ─── Aside ─── */
+  .aside {
+    border-left: 2px solid var(--teal);
+    padding: 16px 20px;
+    margin: 24px 0;
+    background: rgba(15,118,110,0.03);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .aside p {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: var(--ink-secondary);
+    line-height: 1.7;
+  }
+
+  .aside strong { color: var(--ink); }
+
+  /* ─── Pipeline ─── */
+  .pipeline {
+    margin: 32px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    background: white;
+    border: 1px solid var(--rule-line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .pipeline-step {
+    padding: 24px 16px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pipeline-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: var(--rule-line);
+  }
+
+  .pipeline-icon {
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper);
+    border-radius: 12px;
+  }
+
+  .pipeline-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .pipeline-desc {
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  .pipeline-flow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(15,118,110,0.1);
+    overflow: hidden;
+  }
+
+  .pipeline-flow::after {
+    content: '';
+    position: absolute;
+    left: -40%;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    animation: flowAcross 3s ease-in-out infinite;
+  }
+
+  @keyframes flowAcross {
+    0% { left: -40%; }
+    100% { left: 100%; }
+  }
+
+  @media (max-width: 640px) {
+    .pipeline { grid-template-columns: 1fr; }
+    .pipeline-step:not(:last-child)::after {
+      right: 20%; left: 20%; top: auto; bottom: 0; width: auto; height: 1px;
+    }
+  }
+
+  /* ─── Setup steps ─── */
+  .setup-step {
+    margin: 28px 0;
+    padding: 24px;
+    background: white;
+    border: 1px solid var(--rule-line);
+    border-radius: 10px;
+  }
+
+  .setup-step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .setup-step-n {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--teal);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15,118,110,0.06);
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .setup-step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .setup-step p {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .setup-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .setup-option {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    font-size: 14px;
+    color: var(--ink-secondary);
+    line-height: 1.7;
+  }
+
+  .setup-option .opt-letter {
+    font-family: var(--serif);
+    font-weight: 600;
+    color: var(--teal);
+    flex-shrink: 0;
+  }
+
+  /* ─── Paste blocks ─── */
+  .paste-block {
+    background: #1C1917;
+    border-radius: 10px;
+    padding: 18px 20px;
+    padding-right: 80px;
+    margin: 12px 0;
+    position: relative;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: #D6D3D1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .paste-block::-webkit-scrollbar { width: 4px; }
+  .paste-block::-webkit-scrollbar-track { background: transparent; }
+  .paste-block::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+  .paste-block.large {
+    max-height: 600px;
+    font-size: 12px;
+    line-height: 1.8;
+    padding: 20px 24px;
+    padding-right: 90px;
+  }
+
+  .copy-btn {
+    position: sticky;
+    float: right;
+    top: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--sans);
+    z-index: 2;
+    letter-spacing: 0.3px;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+  .copy-btn.copied { background: rgba(15,118,110,0.25); border-color: rgba(15,118,110,0.4); color: #5EEAD4; }
+  .copy-btn .copy-icon { display: inline; }
+  .copy-btn .check-icon { display: none; }
+  .copy-btn.copied .copy-icon { display: none; }
+  .copy-btn.copied .check-icon { display: inline; }
+
+  .cmd-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+    margin-top: 16px;
+  }
+  .cmd-label:first-child { margin-top: 0; }
+
+  .muted-note {
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ─── Agenda ─── */
+  .agenda {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--rule-line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .agenda-item {
+    background: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .agenda-n {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--teal);
+    flex-shrink: 0;
+  }
+
+  .agenda-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule-line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer span { font-size: 13px; color: var(--ink-faint); }
+  .footer a { font-size: 13px; color: var(--teal); text-decoration: none; font-weight: 500; }
+  .footer a:hover { text-decoration: underline; }
+
+  a[target="_blank"] {
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(15,118,110,0.25);
+    transition: border-color 0.2s ease;
+    font-weight: 500;
+  }
+  a[target="_blank"]:hover { border-bottom-color: var(--teal); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="gate" style="position:fixed;top:0;left:0;right:0;bottom:0;background:var(--cream);z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;max-width:320px;padding:20px;">
+    <div style="font-family:var(--serif);font-size:28px;color:var(--ink);margin-bottom:24px;">Go2</div>
+    <input id="pw" type="password" placeholder="Access code" autofocus
+      style="width:100%;padding:12px 16px;font-family:var(--sans);font-size:14px;border:1px solid rgba(28,25,23,0.12);border-radius:8px;background:white;color:var(--ink);outline:none;text-align:center;"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button onclick="checkPw()"
+      style="margin-top:12px;width:100%;padding:10px;font-family:var(--sans);font-size:13px;font-weight:600;background:var(--teal);color:white;border:none;border-radius:8px;cursor:pointer;">Enter</button>
+    <div id="pw-err" style="font-size:12px;color:#dc2626;margin-top:8px;display:none;">Try again.</div>
+  </div>
+</div>
+
+<div class="page" style="display:none;" id="content">
+
+  <!-- LETTERHEAD -->
+  <header class="letterhead">
+    <div class="from-line">Go2 &middot; Discovery Brief</div>
+    <h1>3i Members</h1>
+    <div class="date-line">April 8, 2026</div>
+    <div class="context">
+      <div class="context-item">
+        <span class="val">~800</span>
+        <span class="label">Members</span>
+      </div>
+      <div class="context-item">
+        <span class="val">~70</span>
+        <span class="label">Channels</span>
+      </div>
+      <div class="context-item">
+        <span class="val">1</span>
+        <span class="label">Moderator</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('discovery')">Discovery & Next Steps</button>
+    <button class="tab-btn" onclick="switchTab('kit')">WhatsApp Monitoring Kit</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TAB 1: DISCOVERY & NEXT STEPS          -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="tab-content active" id="tab-discovery">
+
+    <!-- WHAT WE HEARD -->
+    <section class="section">
+      <div class="section-heading">What We Heard</div>
+
+      <p>You've built a private investor community of ~800 members on WhatsApp with about 70 channels. The platform is working -- people are active, conversations are happening. The problem isn't the community. It's that WhatsApp was never designed to be moderated at this scale, and Meta keeps it that way on purpose.</p>
+
+      <p>You have three rules:</p>
+
+      <div class="rules">
+        <div class="rule">
+          <span class="rule-n">1</span>
+          <div class="rule-body">
+            <strong>Full name in profile</strong>
+            <span>No anonymous accounts. If your name isn't real, you can't be here.</span>
+          </div>
+        </div>
+        <div class="rule">
+          <span class="rule-n">2</span>
+          <div class="rule-body">
+            <strong>No solicitation</strong>
+            <span>WhatsApp is for conversation. No deals, no pitches, no promotions. That happens on the platform.</span>
+          </div>
+        </div>
+        <div class="rule">
+          <span class="rule-n">3</span>
+          <div class="rule-body">
+            <strong>Be respectful</strong>
+            <span>No personal attacks, no political arguments that go off the rails, no trolling.</span>
+          </div>
+        </div>
+      </div>
+
+      <p>You have one offshore moderator covering roughly 9-5 weekdays, but moderation is one piece of her job, not the whole thing. You're personally reading all 70 channels once a day to pulse check. Violations happen at 10pm on a Thursday and you find them 12 hours later. It's always reactive.</p>
+
+      <p>You've already tried to solve the WhatsApp API side. Reading messages out is doable. Posting back in is where it breaks -- Meta actively fights unofficial clients. We've been through the same cycle.</p>
+
+      <div class="aside">
+        <p><strong>Working assumption:</strong> You're on regular WhatsApp, not WhatsApp Business API. That's correct -- the Business API doesn't support Communities, caps groups at 8 people, and restricts outbound DMs to a 24-hour reply window with pre-approved templates.</p>
+      </div>
+
+      <p>You want to scale this community further. More members, more channels, more activity. That means the moderation problem gets worse, not better, unless the underlying process changes.</p>
+    </section>
+
+    <div class="section-break"></div>
+
+    <!-- PEOPLE -->
+    <section class="section">
+      <div class="section-heading">What We Can Do</div>
+
+      <h3>People</h3>
+      <p>The monitoring system tells you what's happening. But someone still needs to respond -- especially nights and weekends when most problems actually happen.</p>
+      <p>We can bring in additional team members who plug into the same alert system and become part of your team. Over time, the automation gets better and they work to make themselves removable. We'll cover how this works on Friday.</p>
+
+      <div class="aside">
+        <p><strong>Worth noting:</strong> Once you're pulling every message from every channel into a database, moderation is just the first use case. You're sitting on a full record of what 800 investors are talking about -- topics by channel, trending concerns, conversation summaries, community dashboards. The hard part is getting the data out. Once it's out, you can do whatever you want with it.</p>
+      </div>
+    </section>
+
+    <div class="section-break"></div>
+
+    <!-- FRIDAY AGENDA -->
+    <section class="section">
+      <div class="section-heading">Friday Agenda</div>
+
+      <div class="agenda">
+        <div class="agenda-item">
+          <span class="agenda-n">1</span>
+          <span class="agenda-label">Recap our previous conversation</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n">2</span>
+          <span class="agenda-label">People</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n">3</span>
+          <span class="agenda-label">Technology & Tools</span>
+        </div>
+        <div class="agenda-item">
+          <span class="agenda-n">4</span>
+          <span class="agenda-label">Next steps</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TAB 2: WHATSAPP MONITORING KIT         -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="tab-content" id="tab-kit">
+
+    <section class="section">
+      <p style="font-size:16px; color:var(--ink); margin-bottom:24px;">My computer already put together an installable package of what I've been using that pulls WhatsApp messages into a database, sets up a webhook to fire alerts, and wraps knowledge around it to write a custom message and send it out to whatever phone number you want. It works reliably for me but it's still a hack so it's brittle -- not promising anything, but my guess is it would work for that part.</p>
+    </section>
+
+    <!-- SUBTABS -->
+    <div class="subtabs">
+      <button class="subtab-btn active" onclick="switchSubtab('overview')">How It Works</button>
+      <button class="subtab-btn" onclick="switchSubtab('install')">Install & Test</button>
+    </div>
+
+    <!-- SUBTAB: OVERVIEW -->
+    <div class="subtab-content active" id="subtab-overview">
+
+      <section class="section">
+        <div class="section-heading">The Pipeline</div>
+
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="pipeline-icon">&#128229;</div>
+            <div class="pipeline-label">Extract</div>
+            <div class="pipeline-desc">All 70 channels pulled into a local database, every message searchable</div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">&#9889;</div>
+            <div class="pipeline-label">Trigger</div>
+            <div class="pipeline-desc">Webhook fires in real-time on every new message</div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">&#129504;</div>
+            <div class="pipeline-label">Classify</div>
+            <div class="pipeline-desc">AI checks against your three rules, drafts a moderation response</div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">&#128241;</div>
+            <div class="pipeline-label">Alert</div>
+            <div class="pipeline-desc">You get a text with the flagged message and suggested reply. You decide.</div>
+          </div>
+          <div class="pipeline-flow"></div>
+        </div>
+
+        <div class="aside">
+          <p><strong>Key point:</strong> The AI watches and drafts. A human reviews the flagged message and the suggested response, then posts it themselves. Nothing gets sent automatically into WhatsApp -- that's what breaks.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- SUBTAB: INSTALL & TEST -->
+    <div class="subtab-content" id="subtab-install">
+
+      <section class="section">
+        <p>Everything below will get the monitoring system running on your machine. This is completely optional -- we can walk through it together on Friday instead. But if you want to see it working first, it's three steps.</p>
+
+        <!-- STEP 1 -->
+        <div class="setup-step">
+          <div class="setup-step-header">
+            <span class="setup-step-n">1</span>
+            <span class="setup-step-title">Get a harness on your computer</span>
+          </div>
+          <p>If you already have Codex or Claude Code as a desktop app, skip to Step 3.</p>
+          <div class="setup-options">
+            <div class="setup-option">
+              <span class="opt-letter">A.</span>
+              <span><strong>ChatGPT subscription?</strong> Download Codex &rarr; <a href="https://openai.com/codex" target="_blank">openai.com/codex</a></span>
+            </div>
+            <div class="setup-option">
+              <span class="opt-letter">B.</span>
+              <span><strong>Claude / Anthropic?</strong> Download Claude Desktop &rarr; <a href="https://claude.ai/download" target="_blank">claude.ai/download</a></span>
+            </div>
+            <div class="setup-option">
+              <span class="opt-letter">C.</span>
+              <span><strong>Neither?</strong> Claude Desktop is fastest -- <a href="https://claude.ai" target="_blank">claude.ai</a>, create account, up in under 3 minutes</span>
+            </div>
+          </div>
+          <div class="aside">
+            <p><strong>One catch:</strong> Whatever computer this runs on has to actually be on. It can run in the cloud too -- we can sort that out on Friday if needed.</p>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="setup-step">
+          <div class="setup-step-header">
+            <span class="setup-step-n">2</span>
+            <span class="setup-step-title">Two things your computer needs (2 min, one time ever)</span>
+          </div>
+          <p>Codex and Claude Code need these to run. Open Terminal (on Mac, search "Terminal" in Spotlight) and paste these one at a time:</p>
+
+          <div class="cmd-label">First, install Homebrew (a package manager):</div>
+          <div class="paste-block">
+<button class="copy-btn" onclick="copyBlock(this)"><span class="copy-icon">Copy</span><span class="check-icon">Copied</span></button>
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+
+          <div class="cmd-label">Then install two tools:</div>
+          <div class="paste-block">
+<button class="copy-btn" onclick="copyBlock(this)"><span class="copy-icon">Copy</span><span class="check-icon">Copied</span></button>
+brew install git node</div>
+
+          <p>If either says "already installed" -- great. Close Terminal. You never have to do this again.</p>
+          <p class="muted-note">If anything goes wrong, paste the error into ChatGPT or Claude and it'll tell you exactly what to do. It's usually nothing.</p>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="setup-step">
+          <div class="setup-step-header">
+            <span class="setup-step-n">3</span>
+            <span class="setup-step-title">Paste this into your harness</span>
+          </div>
+          <p>Open Codex or Claude Code and paste the entire block below. You don't need to understand everything in here -- your computer does. Just paste it and follow along.</p>
+
+          <div class="paste-block large">
+<button class="copy-btn" onclick="copyBlock(this)"><span class="copy-icon">Copy</span><span class="check-icon">Copied</span></button>
+I'm Gretchen. I run platform operations for 3i Members, a private investor network with about 800 members. We have a WhatsApp Community with roughly 70 channels.
+
+I need to build a monitoring system that does the following:
+
+1. Pull all messages from my WhatsApp Community channels into a local database so I have a searchable record of everything
+2. Set up a webhook that fires every time a new message comes in
+3. Classify each message against three moderation rules:
+   - Rule 1: Members must have their full real name in their WhatsApp profile (not initials, not a nickname, not blank)
+   - Rule 2: No solicitation of any kind — no deals, no pitches, no promotions. WhatsApp is for conversation only. Deal sharing happens on the platform, not in the chat.
+   - Rule 3: Be respectful — no personal attacks, no heated political arguments that devolve into insults, no trolling
+4. When a violation is detected, write a custom moderation message appropriate to the specific violation and the tone of the conversation
+5. Send that alert plus the suggested moderation message to my phone number via text/SMS so I can review it and post it myself
+
+Important constraints:
+- This is regular WhatsApp, NOT WhatsApp Business API
+- READ ONLY — do not attempt to post messages back into WhatsApp. That is intentionally out of scope. I will post responses manually.
+- Everything runs locally on my computer
+- The WhatsApp connection should use the repo at: [REPO_URL_PLACEHOLDER]
+
+Start by cloning the repo, then walk me through each step. Ask me questions if you need my WhatsApp credentials or phone number for the SMS alerts. Take it one step at a time.</div>
+
+          <div class="aside">
+            <p><strong>Note:</strong> The repo link above will be updated before Friday -- we're doing a final check on it tonight. If you're reading this before then, sit tight on this step and we'll walk through it together on the call.</p>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>Scott Moran &middot; Go2 &middot; s@go2.io</span>
+    <a href="https://go2.io" target="_blank">go2.io</a>
+  </footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
+
+function switchSubtab(subtabId) {
+  document.querySelectorAll('.subtab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.subtab-content').forEach(content => content.classList.remove('active'));
+
+  event.target.classList.add('active');
+  document.getElementById('subtab-' + subtabId).classList.add('active');
+}
+
+function copyBlock(btn) {
+  const block = btn.parentElement;
+  const text = block.innerText.replace('Copy', '').replace('Copied', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 2000);
+  });
+}
+
+// Password gate — SHA-256 hash of the access code
+const HASH = '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'; // "test"
+async function checkPw() {
+  const input = document.getElementById('pw').value;
+  const encoded = new TextEncoder().encode(input);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+  const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+  if (hashHex === HASH) {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    sessionStorage.setItem('px_auth', '1');
+  } else {
+    document.getElementById('pw-err').style.display = 'block';
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').focus();
+  }
+}
+// Auto-unlock if already authed this session
+if (sessionStorage.getItem('px_auth') === '1') {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
