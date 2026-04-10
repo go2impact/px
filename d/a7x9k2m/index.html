@@ -763,34 +763,68 @@
     <div class="subtab-content active" id="subtab-overview">
 
       <section class="section">
-        <div class="section-heading">The Pipeline</div>
+        <div class="section-heading">How It Works</div>
 
+        <p>The system is redundant by design. Two independent collectors watch the same channels. As long as one of them sees the message, it makes it into the database.</p>
+
+        <h3>1. Intake (redundant)</h3>
+        <p>A dedicated Observer WhatsApp account sits in all 70 channels. On the Mac running the monitoring stack, two collectors watch it simultaneously:</p>
+        <div class="rules">
+          <div class="rule">
+            <span class="rule-n">A</span>
+            <div class="rule-body">
+              <strong>Native notifications</strong>
+              <span>macOS desktop notifications from WhatsApp. Fast wake-up signal. Can truncate long messages.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n">B</span>
+            <div class="rule-body">
+              <strong>Baileys (linked device)</strong>
+              <span>Direct WhatsApp protocol connection. Richer data — full message text, sender identity, group metadata. Stronger evidence.</span>
+            </div>
+          </div>
+        </div>
+        <p>Both feed into the same local SQLite database. The merge layer reconciles them — if one catches something the other missed, it backfills. If both catch it, it confirms.</p>
+
+        <h3>2. Classify</h3>
+        <p>Every message gets checked against your three rules. The AI reads the message, evaluates it, and if there's a violation, drafts a custom moderation response appropriate to the tone and context of the conversation.</p>
+
+        <h3>3. Route & Alert</h3>
+        <p>This version is set up on a Mac, so it uses iMessage to send the alert. When a violation is flagged, the system looks at who's supposed to be on coverage at that time — based on schedule, time of day, whatever routing rules you set — and sends them a text with the flagged message plus the suggested response.</p>
+        <p>If the person doesn't acknowledge it within a set window, it can re-send or escalate to a second person. The routing logic is configurable.</p>
+
+        <div class="aside">
+          <p><strong>It never posts back into WhatsApp automatically.</strong> That's what breaks. The system watches, classifies, drafts, and alerts. A human reviews and posts the response themselves. The only time anyone should touch the Observer account directly is once a week or so — just open WhatsApp on the phone briefly to keep the session alive. It won't log out often, but it's good hygiene.</p>
+        </div>
+
+        <h3>4. The Pipeline</h3>
         <div class="pipeline">
           <div class="pipeline-step">
             <div class="pipeline-icon">&#128229;</div>
-            <div class="pipeline-label">Extract</div>
-            <div class="pipeline-desc">All 70 channels pulled into a local database, every message searchable</div>
-          </div>
-          <div class="pipeline-step">
-            <div class="pipeline-icon">&#9889;</div>
-            <div class="pipeline-label">Trigger</div>
-            <div class="pipeline-desc">Webhook fires in real-time on every new message</div>
+            <div class="pipeline-label">Intake</div>
+            <div class="pipeline-desc">Notifications + Baileys capture every message into a local database</div>
           </div>
           <div class="pipeline-step">
             <div class="pipeline-icon">&#129504;</div>
             <div class="pipeline-label">Classify</div>
-            <div class="pipeline-desc">AI checks against your three rules, drafts a moderation response</div>
+            <div class="pipeline-desc">AI checks against your 3 rules, drafts a response if needed</div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-icon">&#128172;</div>
+            <div class="pipeline-label">Route</div>
+            <div class="pipeline-desc">Sends alert via iMessage to whoever is on coverage at that time</div>
           </div>
           <div class="pipeline-step">
             <div class="pipeline-icon">&#128241;</div>
-            <div class="pipeline-label">Alert</div>
-            <div class="pipeline-desc">You get a text with the flagged message and suggested reply. You decide.</div>
+            <div class="pipeline-label">Respond</div>
+            <div class="pipeline-desc">Human reviews the alert, posts the response into WhatsApp themselves</div>
           </div>
           <div class="pipeline-flow"></div>
         </div>
 
         <div class="aside">
-          <p><strong>Key point:</strong> The AI watches and drafts. A human reviews the flagged message and the suggested response, then posts it themselves. Nothing gets sent automatically into WhatsApp -- that's what breaks.</p>
+          <p><strong>Mac-first, PC-portable:</strong> I happen to have this running on a Mac, which is why it uses iMessage for alerts and macOS notifications as one of the intake paths. It would work on a PC but needs some retooling on the notification and alert sides. We can talk through what makes sense for your setup on Friday.</p>
         </div>
       </section>
 
