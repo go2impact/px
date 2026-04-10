@@ -594,6 +594,55 @@
   }
   a[target="_blank"]:hover { border-bottom-color: var(--teal); }
 
+  /* ─── Main dropdowns (Tab 1) ─── */
+  .main-dropdown {
+    margin-bottom: 8px;
+  }
+  .main-dropdown summary {
+    padding: 20px 24px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border: 1px solid var(--rule-line);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+  .main-dropdown summary::-webkit-details-marker { display: none; }
+  .main-dropdown summary:hover {
+    border-color: var(--teal);
+    box-shadow: 0 2px 8px rgba(15,118,110,0.08);
+  }
+  .main-dropdown summary .chevron {
+    font-size: 14px;
+    color: var(--ink-faint);
+    transition: transform 0.25s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+  .main-dropdown[open] summary {
+    border-radius: 10px 10px 0 0;
+    border-color: var(--teal);
+    background: rgba(15,118,110,0.02);
+  }
+  .main-dropdown[open] summary .chevron {
+    transform: rotate(180deg);
+    color: var(--teal);
+  }
+  .main-dropdown .dropdown-body {
+    padding: 24px;
+    background: white;
+    border: 1px solid var(--teal);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    animation: fadeIn 0.25s ease;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -654,12 +703,12 @@
     <p style="margin-bottom:32px;">Here's what we took away from our conversation and what we'll cover on Friday.</p>
 
     <!-- DROPDOWN 1: WHAT WE HEARD -->
-    <details open>
-      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+    <details open class="main-dropdown">
+      <summary>
         <span>1. What We Heard</span>
-        <span style="font-size:12px;color:var(--ink-faint);font-family:var(--sans);font-weight:500;"><!-- CLIENT-SPECIFIC --></span>
+        <span class="chevron">&#9660;</span>
       </summary>
-      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
+      <div class="dropdown-body">
 
         <p>You've built a private investor community of ~800 members on WhatsApp with about 70 channels. WhatsApp was never designed to be moderated at this scale, and Meta keeps it that way on purpose.</p>
 
@@ -697,11 +746,12 @@
     </details>
 
     <!-- DROPDOWN 2: PEOPLE -->
-    <details>
-      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+    <details class="main-dropdown">
+      <summary>
         <span>2. People</span>
+        <span class="chevron">&#9660;</span>
       </summary>
-      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
+      <div class="dropdown-body">
 
         <h3 style="margin-top:0;">What Go2 Does</h3>
         <p>Go2 has been doing this for years. We find the right person for your team, they join as a real member — you manage them, they're your people. Month-to-month subscription, no long-term commitment. We support the hiring, onboarding, and co-management.</p>
@@ -727,11 +777,12 @@
     </details>
 
     <!-- DROPDOWN 3: TECHNOLOGY & TOOLS -->
-    <details>
-      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+    <details class="main-dropdown">
+      <summary>
         <span>3. Technology & Tools</span>
+        <span class="chevron">&#9660;</span>
       </summary>
-      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
+      <div class="dropdown-body">
 
         <h3 style="margin-top:0;">The Platform</h3>
         <p>Every Go2 teammate works with our technology layer underneath them. It captures how work actually happens — not what people report, what they do. That data flows into reports you see, benchmarks we track, and tools that make the person more effective over time.</p>
@@ -761,11 +812,12 @@
     </details>
 
     <!-- DROPDOWN 4: NEXT STEPS -->
-    <details>
-      <summary style="padding:18px 24px;cursor:pointer;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:space-between;background:white;border:1px solid var(--rule-line);border-radius:10px;margin-bottom:2px;">
+    <details class="main-dropdown">
+      <summary>
         <span>4. Next Steps</span>
+        <span class="chevron">&#9660;</span>
       </summary>
-      <div style="padding:24px;background:white;border:1px solid var(--rule-line);border-top:none;border-radius:0 0 10px 10px;margin-bottom:24px;">
+      <div class="dropdown-body">
 
         <!-- CLIENT-SPECIFIC -->
         <h3 style="margin-top:0;">Friday</h3>
