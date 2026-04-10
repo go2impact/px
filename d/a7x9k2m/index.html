@@ -800,7 +800,27 @@
     <div class="subtab-content" id="subtab-install">
 
       <section class="section">
-        <p>Everything below will get the monitoring system running on your machine. This is completely optional -- we can walk through it together on Friday instead. But if you want to see it working first, it's three steps.</p>
+        <p>Everything below will get the monitoring system running on your machine. This is completely optional -- we can walk through it together on Friday instead.</p>
+
+        <!-- STEP 0: OBSERVER ACCOUNT -->
+        <div class="setup-step">
+          <div class="setup-step-header">
+            <span class="setup-step-n">0</span>
+            <span class="setup-step-title">Set up an Observer account</span>
+          </div>
+          <p>You need a dedicated WhatsApp account that just watches. This is separate from anyone's personal account.</p>
+          <ol style="padding-left:20px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Get a spare phone number (a cheap SIM or a Google Voice number works).</li>
+            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Create a new WhatsApp account on a real phone with that number.</li>
+            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Add the Observer account to all 70 channels as a member.</li>
+            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">On the Mac that will run the monitoring, open WhatsApp Desktop and link it to the Observer phone (Settings > Linked Devices).</li>
+            <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Keep the phone plugged in, on Wi-Fi, and alive. It doesn't need to be looked at often — just don't let it die or lose connection.</li>
+          </ol>
+          <div class="aside" style="border-left-color:#b4511d;background:rgba(180,81,29,0.06);">
+            <p><strong>Important:</strong> The Observer account should be boring and passive. Don't use it to chat, don't use it as a moderation account, don't leave the Observer chat window open on the Mac (that suppresses the notifications the system needs). Its only job is to sit in all 70 channels and receive messages so the monitoring stack can see them.</p>
+          </div>
+          <p style="font-size:13px;color:var(--ink-faint);font-style:italic;">From time to time, open WhatsApp on the Observer phone and let it sync — this keeps the linked session healthy and prevents WhatsApp from disconnecting it for inactivity. Once every week or two is usually enough.</p>
+        </div>
 
         <!-- STEP 1 -->
         <div class="setup-step">
