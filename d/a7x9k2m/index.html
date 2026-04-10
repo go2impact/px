@@ -754,6 +754,9 @@
     <div class="subtabs">
       <button class="subtab-btn active" onclick="switchSubtab('overview')">How It Works</button>
       <button class="subtab-btn" onclick="switchSubtab('install')">Install & Test</button>
+      <button class="subtab-btn" onclick="switchSubtab('operations')">Operations</button>
+      <button class="subtab-btn" onclick="switchSubtab('policy')">Policy & Rules</button>
+      <button class="subtab-btn" onclick="switchSubtab('data')">Data Model</button>
     </div>
 
     <!-- SUBTAB: OVERVIEW -->
@@ -885,6 +888,150 @@ Start by cloning the repo, then walk me through each step. Ask me questions if y
 
       </section>
 
+    </div>
+
+    <!-- SUBTAB: OPERATIONS -->
+    <div class="subtab-content" id="subtab-operations">
+      <section class="section">
+        <div class="section-heading">Troubleshooting Checklist</div>
+
+        <p>The phone is the main account. The Mac only helps surface activity. If the phone is offline or logged out, monitoring can stop.</p>
+
+        <h3>Common causes when alerts stop</h3>
+        <ul style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Phone offline or out of power</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">WhatsApp asking to relink</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Mac in Focus Mode or Do Not Disturb</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Observer chat left open on the Mac (suppresses notifications)</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Observer account being used like a normal working account</li>
+        </ul>
+
+        <h3>Check in this order</h3>
+        <ol style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Check the phone first. Make sure it is powered, connected, and still logged into WhatsApp.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Check the Mac. Make sure Focus / Do Not Disturb is off.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Make sure WhatsApp Desktop is not sitting open on the observer chat.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">If needed, open WhatsApp on the phone, go to Settings > Linked Devices, and relink the account to the Mac. Then test again.</li>
+        </ol>
+
+        <div class="aside" style="border-left-color:#b4511d;background:rgba(180,81,29,0.06);">
+          <p><strong>Crucial Mac rule:</strong> Never leave the observer chat open and active in WhatsApp Desktop. Close it or move away from it so it is not the active conversation. If that chat is open in the foreground, the Mac may not trigger the notifications the system needs.</p>
+        </div>
+
+        <h3>Escalate if</h3>
+        <ul style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">The phone keeps getting forced to relink</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">The phone has power and internet but alerts still don't appear</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">The account stops holding a connection</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Someone needs to change the actual setup, not just relink the phone</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- SUBTAB: POLICY & RULES -->
+    <div class="subtab-content" id="subtab-policy">
+      <section class="section">
+        <div class="section-heading">How the Rulebook Should Think</div>
+
+        <p>The collectors are not the moderation brain. This is the policy layer that tells the system what counts, what is ambiguous, and what should happen next.</p>
+
+        <h3>Default moderation logic</h3>
+        <ol style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Decide whether the event is a real member message or system noise.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Check whether the message touches one or more rule categories.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Measure the evidence quality: notification-only, provisional, or confirmed.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">Choose the route: ignore, log, review now, human warning, or admin escalation.</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);">If a private follow-up is appropriate, decide whether that should happen off-platform by text.</li>
+        </ol>
+
+        <h3>Rule buckets</h3>
+        <div class="rules">
+          <div class="rule">
+            <span class="rule-n">1</span>
+            <div class="rule-body">
+              <strong>Real-name policy</strong>
+              <span>Anonymous, troll-like, or clearly fake identities. Start gentle -- this is usually a reminder before it becomes enforcement.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n">2</span>
+            <div class="rule-body">
+              <strong>Solicitation / promotion</strong>
+              <span>Pitches, product pushes, deal promotion, direct commercial asks. Keep generic until real gray areas surface.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n">3</span>
+            <div class="rule-body">
+              <strong>Respect / hostility</strong>
+              <span>Personal attacks, escalation spirals, abusive tone. Separate normal disagreement from direct hostility.</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Routing outcomes</h3>
+        <ul style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>ignore</strong> -- nothing meaningful happened</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>log_only</strong> -- record it, don't distract an operator</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>review_pending</strong> -- suspicious enough to watch, not strong enough to act</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>review_now</strong> -- strong enough that a human should look immediately</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>human_warning</strong> -- operator should send a reminder or warning</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>off_platform_message</strong> -- text follow-up may be easier than WhatsApp DM</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><strong>escalate_admin</strong> -- involve an admin immediately</li>
+        </ul>
+
+        <div class="aside">
+          <p><strong>Why keep it generic first:</strong> The temptation is to overfit to exactly three rules. Resist that. The starter layer should make room for more categories, clearer thresholds, and operator feedback without a rebuild.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- SUBTAB: DATA MODEL -->
+    <div class="subtab-content" id="subtab-data">
+      <section class="section">
+        <div class="section-heading">How the Database is Meant to Grow</div>
+
+        <p>The starter kit keeps the database practical. Raw evidence stays factual, packet rows hold the operational interpretation, and the schema is shaped so a dashboard can sit on top without rewriting the stack.</p>
+
+        <h3>Three layers, three jobs</h3>
+        <div class="rules">
+          <div class="rule">
+            <span class="rule-n" style="font-size:14px;">1</span>
+            <div class="rule-body">
+              <strong>Source events</strong>
+              <span>Raw intake from notifications and the richer collector. This is evidence, not judgment.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n" style="font-size:14px;">2</span>
+            <div class="rule-body">
+              <strong>Canonical events</strong>
+              <span>Merged message records with provenance. Still factual. Should not become the policy brain.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <span class="rule-n" style="font-size:14px;">3</span>
+            <div class="rule-body">
+              <strong>Operator packets</strong>
+              <span>The action layer. Rule signals, violation guesses, routing, and dashboard-friendly columns live here.</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>What belongs on packet rows</h3>
+        <ul style="padding-left:20px;margin:16px 0;">
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">thread_key</code>, <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">group_name</code>, <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">sender_key</code> -- so events can be routed and joined</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">primary_rule_id</code>, <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">violation_guess</code> -- so dashboards can filter by moderation issue</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">overall_assessment</code>, <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">source_confidence</code> -- to separate strong cases from wake-up signals</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">human_review_status</code>, <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">human_final_disposition</code> -- the bridge into human workflow</li>
+          <li style="margin-bottom:8px;font-size:14px;color:var(--ink-secondary);"><code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">external_person_key</code> -- for future CRM joins and repeat-offender tracking</li>
+        </ul>
+
+        <h3>Repeat offenders and member joins</h3>
+        <div class="aside">
+          <p>Repeat-offender views group by <code style="background:var(--paper);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;">sender_key</code> when it exists. CRM joins eventually map the WhatsApp identity to your member record. The schema is already pointed toward this -- start with packet-level rollups, enrich later.</p>
+        </div>
+      </section>
     </div>
 
   </div>
